@@ -1,0 +1,50 @@
+#MACHINE ??= "qemux86-64"
+MACHINE ??= "intel-corei7-64"
+
+# disable intel-media-driver from meta-intel/conf/machine/intel-skylake-64.conf which can not be build without opengl
+MACHINE_HWCODECS = ""
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt"
+PREFERRED_VERSION_linux-intel-rt = "5.10%"
+
+# Needed to run Qt code
+QB_CPU:append = ",+ssse3,+sse4.1,+sse4.2,+popcnt"
+QB_CPU_KVM:append = ",+ssse3,+sse4.1,+sse4.2,+popcnt"
+
+# tar.bz2 is needed for RAUC bundle creation
+IMAGE_FSTYPES = "tar.bz2 wic"
+DISTRO_FEATURES:append = " rauc"
+PREFERRED_RPROVIDER_virtual-grub-bootconf = "rauc-grubconf"
+RAUC_KEYRING_FILE="${THISDIR}/../../../meta-distro-coffee/openssl-ca/dev/ca.cert.pem"
+RAUC_KEY_FILE="${THISDIR}/../../../meta-distro-coffee/openssl-ca/dev/private/development-1.key.pem"
+RAUC_CERT_FILE="${THISDIR}/../../../meta-distro-coffee/openssl-ca/dev/development-1.cert.pem"
+
+# Saves about 630MB of flash
+MACHINE_EXTRA_RRECOMMENDS:remove = " linux-firmware"
+
+# Needed for runqemu (in combination with meta-intel)
+EXTRA_IMAGEDEPENDS += "qemu-system-native qemu-helper-native:do_addto_recipe_sysroot"
+
+DL_DIR ?= "${BSPDIR}/downloads"
+SSTATE_DIR ?= "${BSPDIR}/sstate-cache"
+INHERIT += "rm_work"
+
+DISTRO ?= "coffee"
+PACKAGE_CLASSES ?= "package_ipk"
+
+EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
+USER_CLASSES ?= "buildstats image-prelink"
+PATCHRESOLVE = "noop"
+
+WKS_FILE = "qemux86-efi.wks"
+
+BB_DISKMON_DIRS ??= "\
+    STOPTASKS,${TMPDIR},1G,100K \
+    STOPTASKS,${DL_DIR},1G,100K \
+    STOPTASKS,${SSTATE_DIR},1G,100K \
+    STOPTASKS,/tmp,100M,100K \
+    ABORT,${TMPDIR},100M,1K \
+    ABORT,${DL_DIR},100M,1K \
+    ABORT,${SSTATE_DIR},100M,1K \
+    ABORT,/tmp,10M,1K"
+
+CONF_VERSION = "2"

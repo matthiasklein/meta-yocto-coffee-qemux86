@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+  <network>
+    <device name="eth0" ip="192.168.7.2" netmask="255.255.255.0" gateway="192.168.7.1"/>
+    <device name="wan-modem" dhcp="true" enable="false"/>
+  </network>
+  <wan apn="web.vodafone.de" pin="" ping_url="google.com"/>
+  <ntp interval="3600" hostname="0.de.pool.ntp.org"/>
+  <vpn enable="false" ping_url="10.128.0.1"/>
+  <vlan enable="false" device="eth0" id="21" ip="192.168.180.14" netmask="255.255.255.0"/>
+</root>
+

@@ -1,0 +1,25 @@
+# short-description: Create an EFI disk image
+# long-description: Creates a partitioned EFI disk image with Dual-Boot and RAUC
+# 
+# The partitionging scheme provides:
+# * a bootloader partition with extra space for a shadow copy for atomic bootloader updates
+# * a grub environment partition
+# * two root file system partitions for atomic updates
+# * a common data partition
+
+# Note: The grubenv partition is created empty. RAUC creates the initial file at first startup.
+#       From then on grub also uses this file. (Grub does not create an initial file itself).
+
+# Note: The fstab is modified via the recipe base-files_%.bbappend, because the modification must also be included in the RAUC bundle.
+#       This would not be the case if the fstab was modified by WIC.
+
+# Note: The boot partition is generated via the recipe boot-image.bb (efi-boot.vfat image) for updating the partition via a RAUC bundle.
+
+bootloader --ptable gpt
+part --align 4096 --fixed-size 50M  --fstype=vfat --label boot     --source rawcopy --sourceparams="file=efi-boot.vfat" --active
+part --align 4096 --fixed-size 50M  --no-table
+part --align 4096 --fixed-size 10M  --fstype=vfat --label grubenv 
+part --align 4096                   --fstype=ext4 --label coffeea --source rootfs
+part --align 4096                   --fstype=ext4 --label coffeeb --source rootfs
+part --align 4096 --fixed-size 200M --fstype=ext4 --label workspace
+

@@ -1,0 +1,71 @@
+Yocto BSP for QEMU X86
+======================
+
+Build requirements
+------------------
+```
+sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib g++-multilib build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping libsdl1.2-dev xterm libncurses5-dev lz4 zstd
+```
+
+Configure shell and language
+----------------------------
+```
+sudo dpkg-reconfigure dash
+```
+
+=> Choose No to dash when prompted.
+
+```
+sudo dpkg-reconfigure locales
+```
+
+=> en_US.UTF-8
+
+Checkout the source code
+------------------------
+Initialise your project like this:
+```
+repo init -u git@bitbucket.org:optimeas/<repository>.git -b <branch>
+```
+
+For exampe:
+
+```
+cd ~ && rm -fR yocto-coffee-qemux86 && mkdir yocto-coffee-qemux86 && cd yocto-coffee-qemux86 && repo init -u git@github.com:matthiasklein/meta-yocto-coffee-qemux86.git -b master && repo sync
+```
+
+Build
+-----
+
+A regular Yocto build is started in optimeas-yocto like this:
+
+```
+source setup-environment
+bitbake coffee-image
+```
+
+Import local.conf changes into the build directory:
+
+```
+../apply-conf.sh && source ../setup-environment
+```
+
+
+```
+cd yocto-coffee-qemux86yocto-coffee-qemux86
+=> For building all images and all SDKs:
+./bsp-buildall.sh
+```
+
+=> OR: for building only a single image without any SDK:
+```
+./bsp-buildall.sh -m 1
+```
+
+
+Run the image inside QEMU
+-------------------------
+```
+runqemu intel-corei7-64 coffee-image wic ovmf nographic kvm
+```
+=> exit with "Ctrl-A X"
