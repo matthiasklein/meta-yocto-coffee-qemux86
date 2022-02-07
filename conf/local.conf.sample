@@ -32,7 +32,7 @@ DISTRO ?= "coffee"
 PACKAGE_CLASSES ?= "package_ipk"
 
 EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
-USER_CLASSES ?= "buildstats image-prelink"
+USER_CLASSES ?= "buildstats"
 PATCHRESOLVE = "noop"
 
 WKS_FILE = "qemux86-efi.wks"
