@@ -41,6 +41,6 @@ do_deploy () {
     mv ${FATIMG} ${DEPLOYDIR}/
 }
 
-do_deploy[cleandirs] = "${WORKDIR}/efi-boot"
+do_deploy[cleandirs] += "${WORKDIR}/efi-boot"
 
 addtask deploy after do_install
