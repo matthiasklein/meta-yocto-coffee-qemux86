@@ -31,7 +31,7 @@ repo init -u git@bitbucket.org:optimeas/<repository>.git -b <branch>
 For exampe:
 
 ```
-cd ~ && rm -fR yocto-coffee-qemux86 && mkdir yocto-coffee-qemux86 && cd yocto-coffee-qemux86 && repo init -u git@github.com:matthiasklein/meta-yocto-coffee-qemux86.git -b master && repo sync
+cd ~ && rm -fR yocto-coffee-qemux86 && mkdir yocto-coffee-qemux86 && cd yocto-coffee-qemux86 && repo init -u git@github.com:matthiasklein/meta-yocto-coffee-qemux86.git -b kirkstone && repo sync
 ```
 
 Build
